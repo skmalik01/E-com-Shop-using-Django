@@ -176,7 +176,7 @@
     
   }
   {% comment %} #if the add to cart button is clicked, add/increment the item {% endcomment %}
-  $('.cart').click(function(){
+  $(document).on("click", "button.cart", function () {
     console.log('clicked');
     var idstr = this.id.toString();
     if (cart[idstr] != undefined){
@@ -191,43 +191,69 @@
   {% comment %} add popover to cart  {% endcomment %}
   let popover;
   document.addEventListener('DOMContentLoaded', function () {
-    const popoverTrigger = document.getElementById('popcart');
-    popover = new bootstrap.Popover(popoverTrigger, {
-      html: true,
-    });
-    popoverTrigger.addEventListener('mouseenter', function() {
-      updatePopover(cart);
-      
-    });
-    popoverTrigger.addEventListener('mouseleave', function() {
-      popover.hide();
-    });
     updatePopover(cart);
-    popover.show();
-    
   });
   
-  function updatePopover(cart){
-    console.log('we are in updatepopover')
-    var popStr = "";
-    popStr = popStr + "<h5>Cart for your items in My shopping cart</h5>";
-    var i = 1;
-    for (var item in cart){
-      popStr = popStr + "<b>" + i + "</b>. ";
-      popStr = popStr + document.getElementById('name' + item).innerHTML + "Qty: " + cart[item] + '<br>';
-      i = i + 1;
+  
+  function updatePopover(cart) {
+    console.log('we are in updatepopover');
+    let popStr = "<h5>Cart for your items in My shopping cart</h5>";
+    let i = 1;
+  
+    for (let item in cart) {
+      if (document.getElementById('name' + item)) {
+        popStr += `<b>${i}</b>. ${document.getElementById('name' + item).innerHTML} Qty: ${cart[item]}<br>`;
+        i++;
+      }
     }
-    popStr = popStr + "</div>"
-    console.log(popStr);
-    document.getElementById('popcart').setAttribute('data-bs-content', popStr);
+  
+    popStr += `
+      <div class='mt-2 d-flex justify-content-start gap-2'>
+        <a href='/shop/checkout'>
+          <button class='btn btn-primary btn-sm'>Checkout</button>
+        </a>
+        <button class='btn btn-danger btn-sm' id='clearCartBtn'>Clear Cart</button>
+      </div>
+    `;
+  
+    const popoverTrigger = document.getElementById('popcart');
+  
+    // Bootstrap 5 manual popover update
     if (popover) {
-      popover.dispose(); // remove old one
-      popover = new bootstrap.Popover(document.getElementById('popcart'), {
-        html: true
-      });
-      popover.show();
+      popover.dispose();
+    }
+  
+    popover = new bootstrap.Popover(popoverTrigger, {
+      html: true,
+      content: popStr,
+      trigger: 'focus',
+      sanitize: false // Allow HTML inside popover content
+    });
+  
+    // Re-show popover manually
+    popoverTrigger.focus();
   }
+
+document.addEventListener('click', function (e) {
+  if (e.target && e.target.id === 'clearCartBtn') {
+    clearCart();
+  }
+});
+
+function clearCart() {
+  cart = JSON.parse(localStorage.getItem('cart')) || {};
+  for (let item in cart) {
+    const div = document.getElementById('div' + item);
+    if (div) {
+      div.innerHTML = `<button id="${item}" class="btn btn-primary cart">ADD TO CART</button>`;
+    }
+  }
+  cart = {};
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById('cart').innerHTML = 0;
+  updatePopover(cart);
 }
+
 function updateCart(cart) {
   var sum = 0;
   for (var item in cart) {
