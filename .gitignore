@@ -1,0 +1,57 @@
+# Python stuff
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+
+# Virtualenv
+env/
+venv/
+ENV/
+.venv/
+.env
+.env.*
+
+# Django stuff
+*.db
+db.sqlite3
+/media/
+/staticfiles/
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Node modules (if using npm for frontend)
+node_modules/
+package-lock.json
+yarn.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiled files
+*.so
+*.pyd
+*.pyo
+
+# Coverage & testing
+htmlcov/
+.coverage
+.tox/
+.cache/
+.pytest_cache/
+
+# Migrations (optional: remove if you want to track them)
+**/migrations/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Git
+*.orig

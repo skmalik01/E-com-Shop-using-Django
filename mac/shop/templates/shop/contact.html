@@ -1,0 +1,108 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}Contact Us - My Shop{% endblock %}
+
+{% block css %}
+  <style>
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #007bff;
+      border-radius: 20px;
+      box-sizing: border-box;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .contact-info {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .contact-info p {
+      margin: 5px 0;
+    }
+
+    .contact-info i {
+      color: #007bff;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container my-4">
+    <div class="contact-container">
+
+      <h2>Contact Us!</h2>
+
+      <!-- Success message block -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form action="{% url 'ContactUs' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control mt-2" id="name" name="name" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control mt-2" id="email" name="email" required placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" class="form-control mt-2" id="subject" name="subject" required placeholder="Enter subject">
+        </div>
+        <div class="form-group">
+          <label for="message">How May We Help You?</label>
+          <textarea class="form-control mt-2" id="message" name="message" rows="5" required placeholder="Write your message here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+      </form>
+
+      <div class="contact-info">
+        <h3>Or Contact Us Directly</h3>
+        <p><i class="fas fa-phone-alt"></i> Phone: +123 456 7890</p>
+        <p><i class="fas fa-envelope"></i> Email: support@myshop.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> Address: 123 Shop Street, Shop City, Shop Country</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

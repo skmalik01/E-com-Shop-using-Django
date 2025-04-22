@@ -1,0 +1,50 @@
+{% extends 'shop/basic.html' %}
+{% block title %}About Us{% endblock %}
+
+{% block css %}
+  .about-container {
+    padding-top: 100px;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .about-heading {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+  }
+
+  .highlight {
+    color: #28a745;
+    font-weight: bold;
+  }
+{% endblock %}
+
+{% block body %}
+<div class="about-container">
+  <h1 class="about-heading">Welcome to <span class="highlight">SHOP</span></h1>
+  <p class="about-text">
+    We are an online store committed to bringing you the best shopping experience. Our mission is to provide
+    top-quality products at affordable prices, delivered straight to your doorsteps.
+  </p>
+
+  <p class="about-text">
+    At <span class="highlight">SHOP</span>, we believe shopping should be easy, convenient, and enjoyable. That's
+    why we've created a platform where you can browse, compare, and purchase your favorite products hassle-free.
+  </p>
+
+  <p class="about-text">
+    We thank you for choosing us and being a part of our journey. If you have any feedback or questions, don’t hesitate to
+    <a href="/shop/contact">contact us</a>.
+  </p>
+</div>
+{% endblock %}
+

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+      .container {
+        padding-top: 70px;
+      }
+    
+      .navbar {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 999;
+      }
+      .btn {
+        padding: 10px 20px;
+        width: 100%;
+        box-sizing: border-box;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+      }
+    
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn:hover {
+        background-color:rgb(158, 5, 5);
+      }
+    </style>
+    <style>
+      {% block css %}
+      {% endblock %}
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand text-light" href="/shop">MY SHOP</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active text-light" aria-current="page" href="/shop/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/tracker">Tracker</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/products">Product View</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/search">Search Result</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/checkout">Checkout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/contact">Contact Us</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            {% comment %} <li class="nav-item">
+              <a class="nav-link disabled text-light" aria-disabled="true">Disabled</a>
+            </li> {% endcomment %}
+            {% comment %} <li class="nav-item">
+              <a class="nav-link text-light" href="#">My Cart(<span id="cart">0</span>)</a>
+            </li> {% endcomment %}
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button type="button" id="popcart" class="btn btn-secondary bg-success mx-2" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<h5>Cart for your items in My shopping cart</h5>" data-bs-container="body">
+              My Cart(<span id="cart">0</span>)
+            </button>
+          </form>
+          
+        </div>
+      </div>
+    </nav>
+    {% block body %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      {% comment %} #Find out the cart items from localstorage {% endcomment %}
+      if (localStorage.getItem('cart') == null){
+        var cart = {};
+      }
+      else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+      }
+      
+      $('.cart').click(function(){
+        console.log('clicked');
+        var idstr = this.id.toString();
+        console.log(idstr);
+        if (cart[idstr] != undefined){
+          cart[idstr] = cart[idstr] + 1;
+        }
+        else{
+          cart[idstr] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+      });
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        const popoverTrigger = document.getElementById('popcart');
+        const popover = new bootstrap.Popover(popoverTrigger, {
+          trigger: 'hover',
+          placement: 'bottom',
+          html: true,
+          content: "<h5>Cart for your items in My shopping cart</h5>"
+        });
+      });
+      
+    </script>
+
+    {% block js %}{% endblock %}
+  </body>
+</html>
