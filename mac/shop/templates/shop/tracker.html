@@ -1,4 +1,77 @@
 {% extends 'shop/basic.html' %}
-{% block title %}Order Tracker Page{% endblock %}
-{% block body %} This is our Tracker Page {% endblock %}
-{% block css %}{% endblock %}
+{% block title %}Tracker - My SHOP{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="col my-4">
+        <h2 class="d-flex justify-content-center align-items-center">My Shop Cart Express Tracker - Enter Your Order_id and Email address to Track your Order.</h2>
+        <form action="#" id="trackerForm" class="row g-3" method="post"> {% csrf_token %}
+              <div class="col-md-6 fw-bold my-4">
+                <label for="OrderId" class="form-label">Order ID</label>
+                <input type="text" class="form-control" id="OrderId" name="OrderId" placeholder="Enter Your Order Id">
+              </div>
+              <div class="col-md-6 fw-bold my-4">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary fw-bold">Track Order</button>
+              </div>
+        </form>
+    </div>
+    <div class="col my-4">
+        <h2 class="d-flex justify-content-center align-items-center">Your Order Status</h2>
+        <div class="my-4">
+            <ul class="list-group" id="items">
+                <b class="d-flex justify-content-center align-items-center">*****Enter Your Order Id and Email and Click Track Order to find details about your order!*****</b>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block js %}
+<script>
+    $('#trackerForm').submit(function(event){
+        $('#items').empty();
+        var formData = {
+            'OrderId' : $('input[name=OrderId]').val(),
+            'email' : $('input[name=email]').val(),
+            'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val(),
+        };
+
+    $.ajax({
+        type : 'POST',
+        url : '/shop/tracker/',
+        data : formData,
+        encode : true,
+        success : function(data){
+            console.log(data);
+            let updates = JSON.parse(data);
+            if (updates.length>0 & updates != {}){
+            for(i=0; i<updates.length; i++){
+                let text = updates[i]['text'];
+                let time = updates[i]['time'];
+                
+                mystr = `<li class="list-group-item d-flex align-items-center fw-bold" 
+                style="justify-content: space-between !important; text-align: left;">
+               <span style="flex: 1;">${text}</span>
+               <span class="badge text-bg-primary rounded-pill">${time}</span>
+           </li>`;
+                $('#items').append(mystr);
+              }
+            }
+            else{
+                mystr = `<li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                    ****SORRY, We are not able to fetch this order id and email. Make sure to type correct order id and email.****</li>`
+                $('#items').append(mystr);
+            }
+        }
+        
+    });
+
+    event.preventDefault();
+
+    });
+</script>
+{% endblock %}
