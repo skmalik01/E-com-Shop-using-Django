@@ -33,12 +33,20 @@ def contact(request):
 
         contact = Contact(name=name, email=email, subject=subject, message=message)
         contact.save()
-        # Send the email
         send_mail(
-            subject,
-            f"Message from {name} ({email}):\n\n{message}",
-            settings.DEFAULT_FROM_EMAIL,
-            ['support@myshop.com'],
+            subject=f"New Contact Form Submission: {subject}",
+            message=f"New message received!\n\nName: {name}\nEmail: {email}\n\nMessage:\n{message}",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=['malikshaikh0105@gmail.com'],
+            fail_silently=False,
+        )
+
+        
+        send_mail(
+            subject="Thank you for contacting MyShop!",
+            message=f"Hi {name},\n\nThank you for contacting us.\nWe have received your message and will respond within 24 hours.\n\n- Team MyShop",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
             fail_silently=False,
         )
         messages.success(request, f"Thank you {name}, your message has been received!")
