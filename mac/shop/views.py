@@ -100,6 +100,58 @@ def checkout(request):
         order.save()
         update = OrderUpdate(order_id=order.order_id, update_desc="The Order has been Placed")
         update.save()
+        
+        # items_json already saved above
+        items = json.loads(items_json)
+        item_details = ""
+        total_price = 0
+
+        for product_id, values in items.items():
+            qty = values[0]
+            price = values[2]
+            total_price += qty * price
+
+            try:
+                # Assuming product_id is like "pr5" where "5" is Product pk
+                pk = int(product_id[2:])
+                product = Product.objects.get(id=pk)
+                product_name = product.product_name
+            except:
+                product_name = f"Unknown Product ({product_id})"
+
+            item_details += f"{product_name}  |  Qty: {qty}  |  ₹{price} each\n"
+
+        # Send email to user
+        message_body = f"""
+Hi {name},
+
+🧾 Your Order has been placed successfully!
+
+🆔 Order ID: {order.order_id}
+
+📦 Items Ordered:
+{item_details}
+
+💰 Total Price: ₹{total_price}
+
+📍 Delivery Address:
+{address}, {city}, {state}, {zip_code}
+📞 Contact: {phone}
+
+⏰ Your order will be delivered within 24 hours.
+
+Thank you for shopping with us!
+– Team MyShop
+        """
+
+        send_mail(
+            "✅ Order Confirmation - MyShop",
+            message_body,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+            fail_silently=False,
+        )
+        
         thank = True
         id = order.order_id
         return render(request, 'shop/checkout.html', {'thank' : thank, 'id' : id})
