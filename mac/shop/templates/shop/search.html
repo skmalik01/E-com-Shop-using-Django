@@ -1,4 +1,229 @@
 {% extends 'shop/basic.html' %}
-{% block title %}Serach Page{% endblock %}
-{% block body %} This is our Search result Page {% endblock %}
-{% block css %}{% endblock %}
+{% block title %}Search Results{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+  <h3>Search Results for "<strong>{{ query }}</strong>"</h3>
+  <p class="text-muted">{{ message }}</p>
+
+  <div class="row">
+    {% for product in products %}
+    <div class="col-md-3 my-2 d-flex">
+      <div class="card h-100 w-100 d-flex flex-column">
+        <!-- Product Image -->
+        <img src="/media/{{ product.image }}" class="card-img-top" alt="{{ product.product_name }}" style="height: 300px; object-fit: cover;">
+
+        <div class="card-body d-flex flex-column align-items-center justify-content-between">
+          <!-- Product Name -->
+          <h5 class="card-title text-center" id="namepr{{ product.id }}">
+            <b>{{ product.product_name }}</b>
+          </h5>
+
+          <!-- Product Price -->
+          <h6 class="card-text">
+            <b>Price - <span id="pricepr{{ product.id }}">{{ product.price }}</span></b>
+          </h6>
+
+          <!-- Product Description -->
+          <p class="card-text text-center" style="min-height: 60px;">
+            <b>{{ product.desc|slice:"0:53" }}...</b>
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="mt-auto w-100">
+            <span id="divpr{{ product.id }}" class="divpr{{ product.id }}">
+              <button id="pr{{ product.id }}" class="btn btn-primary cart w-100">ADD TO CART</button>
+            </span>
+            <a href="{% url 'ProductView' myid=product.id %}">
+              <button id="qv{{ product.id }}" class="btn btn-primary mt-2 w-100">QUICK VIEW</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No products found matching your search.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  console.log('working')
+  {% comment %} #Find out the cart items from localstorage {% endcomment %}
+  document.addEventListener('DOMContentLoaded', function () {
+    if (localStorage.getItem('cart') == null) {
+      cart = {};
+    } else {
+      try {
+        cart = JSON.parse(localStorage.getItem('cart')) || {};
+      } catch (e) {
+        cart = {};
+      }
+    }
+    updateCart(cart);
+    updatePopover(cart);
+  });
+  
+  {% comment %} #if the add to cart button is clicked, add/increment the item {% endcomment %}
+  document.addEventListener('DOMContentLoaded', function () {
+    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+    // Ensure popoverTrigger exists before proceeding
+    const popoverTrigger = document.getElementById('popcart');
+    if (popoverTrigger) {
+        updatePopover(cart); // Update popover only when the element exists
+    }
+  });
+
+  $(document).on("click", "button.cart", function () {
+    console.log('clicked');
+
+    let idstr = this.id.toString();
+
+    let name = document.getElementById('namepr' + idstr.slice(2))?.innerText || "My Item";
+    let price = document.getElementById('pricepr' + idstr.slice(2))?.innerText || "0";
+
+    let existingQty = parseInt(cart[idstr]?.[0]) || 0;
+    let qty = existingQty + 1;
+
+    cart[idstr] = [qty, name, parseInt(price)];
+
+    console.log("Qty:", qty);
+    console.log("Name:", name);
+    console.log("Price:", price);
+  
+    updateCart(cart);
+    updatePopover(cart);
+  });
+  
+  {% comment %} add popover to cart  {% endcomment %}
+  let popover;
+  document.addEventListener('DOMContentLoaded', function () {
+    updatePopover(cart);
+  });
+  
+  
+  function updatePopover(cart) {
+    console.log('we are in updatepopover');
+    let popStr = "<h5>Cart for your items in My shopping cart</h5>";
+    let i = 1;
+  
+    for (let item in cart) {
+      if (document.getElementById('name' + item)) {
+        popStr += `<b>${i}</b>. ${document.getElementById('name' + item).innerHTML} Qty: ${cart[item][0]}<br>`;
+        i++;
+      }
+    }
+  
+    popStr += `
+      <div class='mt-2 d-flex justify-content-start gap-2'>
+        <a href='/shop/checkout'>
+          <button class='btn btn-primary btn-sm'>Checkout</button>
+        </a>
+        <button class='btn btn-danger btn-sm' id='clearCartBtn'>Clear Cart</button>
+      </div>
+    `;
+  
+    const popoverTrigger = document.getElementById('popcart');
+    
+    // Bootstrap 5 manual popover update
+    if (popover) {
+      popover.dispose();
+    }
+  
+    popover = new bootstrap.Popover(popoverTrigger, {
+      html: true,
+      content: popStr,
+      trigger: 'focus',
+      sanitize: false // Allow HTML inside popover content
+    });
+  
+    // Re-show popover manually
+    popoverTrigger.focus();
+  }
+
+document.addEventListener('click', function (e) {
+  if (e.target && e.target.id === 'clearCartBtn') {
+    clearCart();
+  }
+});
+
+function clearCart() {
+  cart = JSON.parse(localStorage.getItem('cart')) || {};
+  for (let item in cart) {
+    const div = document.getElementById('div' + item);
+    if (div) {
+      div.innerHTML = `<button id="${item}" class="btn btn-primary cart">ADD TO CART</button>`;
+    }
+  }
+  cart = {};
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById('cart').innerHTML = 0;
+  updatePopover(cart);
+}
+
+function updateCart(cart) {
+  var sum = 0;
+  for (var item in cart) {
+    sum += parseInt(cart[item]?.[0]) || 0;
+    let quantity = parseInt(cart[item][0]) || 0;
+    let unitPrice = parseFloat(cart[item][2]) || 0;
+    let totalPrice = quantity * unitPrice;
+    console.log(`Total for ${cart[item][1]}: ₹${totalPrice}`);
+
+    // Agar item quantity 0 hai, toh "Add to Cart" dikhaye
+    if (!cart[item][0] || cart[item][0] === 0) {
+      delete cart[item]; // fixed
+      document.getElementById('div' + item).innerHTML = `
+        <button id="${item}" class="btn btn-primary cart">ADD TO CART</button>
+      `;
+    } else {
+      // Agar quantity > 0 hai toh plus/minus button dikhaye
+      document.getElementById('div' + item).innerHTML = `
+        <div class="d-flex justify-content-between align-items-center w-100 gap-2">
+          <button id="minus${item}" class="btn btn-primary minus fw-bold fs-4 px-3 py-1">−</button>
+          <div class="text-center">
+            <span id="val${item}" class="fw-bold fs-4">${cart[item][0]}</span><br>
+            <b>₹${totalPrice}</b>
+          </div>
+          <button id="plus${item}" class="btn btn-primary plus fw-bold fs-4 px-3 py-1">+</button>
+        </div>
+      `;
+    }
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById('cart').innerHTML = sum;
+  updatePopover(cart);
+}
+
+
+  {% comment %} if plus or minus button is clicked, change the cart as well as the display value {% endcomment %}
+  $(document).on("click", "button.minus", function(){
+    let a = this.id.slice(7);
+    let key = 'pr' + a;
+    if (cart[key]) {
+      cart[key][0] = Math.max(0, cart[key][0] - 1);
+      document.getElementById('val' + key).innerHTML = cart[key][0];
+      console.log(cart);
+      updateCart(cart);
+    }
+  });
+  
+  $(document).on("click", "button.plus", function(){
+    let a = this.id.slice(6);
+    let key = 'pr' + a;
+    if (cart[key]) {
+      cart[key][0] = cart[key][0] + 1;
+      document.getElementById('val' + key).innerHTML = cart[key][0];
+      console.log(cart);
+      updateCart(cart);
+    }
+  });
+  
+
+</script>
+
+{% endblock %}

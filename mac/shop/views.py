@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Orders, Product, Contact, OrderUpdate
 from django.contrib import messages
+from django.db.models import Q
 from math import ceil
 import json
 
@@ -74,7 +75,27 @@ def tracker(request):
     return render(request, 'shop/tracker.html')
 
 def search(request):
-    return render(request, 'shop/search.html')
+    
+    if request.method == "POST":
+        query = request.POST.get('query', '').strip()
+    else:
+        query = request.GET.get('query', '').strip()
+    if len(query) < 2:
+        products = []
+        message = "Please enter a more relevant search term."
+    else:
+        products = Product.objects.filter(
+            Q(product_name__icontains=query) |
+            Q(category__icontains=query) |
+            Q(desc__icontains=query)
+        )
+        message = "" if products else "No products found."
+
+    return render(request, 'shop/search.html', {
+        'products': products,
+        'query': query,
+        'message': message
+    })
 
 def productView(request, myid):
     #fetch the product using id

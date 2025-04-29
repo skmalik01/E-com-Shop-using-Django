@@ -89,10 +89,12 @@
               <a class="nav-link text-light" href="#">My Cart(<span id="cart">0</span>)</a>
             </li> {% endcomment %}
           </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <form class="d-flex" role="search" method="POST" action="/shop/search/">{% csrf_token %}
+            <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-            <button type="button" id="popcart" class="btn btn-secondary bg-success mx-2" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<h5>Cart for your items in My shopping cart</h5>" data-bs-container="body">
+            <button type="button" id="popcart" class="btn btn-secondary bg-success mx-2"
+              data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true"
+              data-bs-content="<h5>Cart for your items in My shopping cart</h5>" data-bs-container="body">
               My Cart(<span id="cart">0</span>)
             </button>
           </form>
