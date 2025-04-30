@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,29 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  #Google OAuth2
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Google OAuth2 credentials
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '971413479100-be5l702orqn5klck6jj9ruk59g714qif.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+# Redirect after login
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Optional: Save extra user data
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+
 
 ROOT_URLCONF = 'mac.urls'
 

@@ -98,7 +98,18 @@
               My Cart(<span id="cart">0</span>)
             </button>
           </form>
-          
+          {% if user.is_authenticated %}
+            <p class="text-light my-2">Hello, {{ user.username }}</p>
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm mx-2">Logout</button>
+            </form>
+          {% else %}
+            <form method="post" action="{% url 'social:begin' 'google-oauth2' %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm mx-2">Login with Google</button>
+            </form>
+          {% endif %}
         </div>
       </div>
     </nav>
