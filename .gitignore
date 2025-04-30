@@ -5,20 +5,35 @@ __pycache__/
 *.log
 *.pot
 *.pyc
+*.pyo
+*.pyd
+*.so
 
 # Virtualenv
 env/
 venv/
 ENV/
 .venv/
+.venv*/
 .env
 .env.*
+*.env
+*.env.*
 
 # Django stuff
 *.db
 db.sqlite3
 /media/
 /staticfiles/
+local_settings.py
+
+# Secrets & keys
+*.pem
+*.key
+*.crt
+*.token
+*.secret
+secrets.json
 
 # VS Code / IDE
 .vscode/
@@ -33,11 +48,6 @@ yarn.lock
 .DS_Store
 Thumbs.db
 
-# Compiled files
-*.so
-*.pyd
-*.pyo
-
 # Coverage & testing
 htmlcov/
 .coverage
@@ -45,8 +55,9 @@ htmlcov/
 .cache/
 .pytest_cache/
 
-# Migrations (optional: remove if you want to track them)
+# Migrations (optional: only if you want to ignore them)
 **/migrations/
+!**/migrations/__init__.py  # Keep __init__.py so Django detects the app
 
 # Build
 build/
@@ -55,3 +66,6 @@ dist/
 
 # Git
 *.orig
+
+GOOGLE_CLIENT_ID=xxxxxxxxxxxx
+GOOGLE_CLIENT_SECRET=xxxxxxxxxxxx
