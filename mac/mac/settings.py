@@ -59,7 +59,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Google OAuth2 credentials
-import os
+import os 
+from dotenv import dotenv_values
+config = dotenv_values(".env")
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('971413479100-be5l702orqn5klck6jj9ruk59g714qif.apps.googleusercontent.com')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('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')
