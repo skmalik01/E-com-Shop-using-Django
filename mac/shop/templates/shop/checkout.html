@@ -19,6 +19,9 @@
         <div class="my-4">
             <form action="/shop/checkout/" class="row g-3" method="post"> {% csrf_token %}
               <input type="hidden" name="itemsJson" id="itemsJson">
+              <input type="hidden" name="payment_id">
+              <input type="hidden" name="razorpay_order_id">
+              <input type="hidden" name="razorpay_signature">
                 <div class="col-md-6">
                   <label for="inputname" class="form-label">Name</label>
                   <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name">
@@ -54,6 +57,9 @@
                 <div class="col-12">
                   <button type="submit" class="btn btn-primary fw-bold">Place Order</button>
                 </div>
+                <div class="col-12">
+                  <button type="button" id="pay-btn" class="btn btn-success fw-bold mt-3">Pay with Razorpay</button>
+                </div>
             </form>
         </div>
     </div>
@@ -61,6 +67,7 @@
 {% endblock %}
 {% block css %}{% endblock %}
 {% block js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     if (localStorage.getItem('cart') == null) {
         cart = {};
@@ -101,5 +108,43 @@
       localStorage.clear();
       document.location = "/shop";
       {% endif %}
+
+      document.getElementById('pay-btn').onclick = function(e) {
+        let name = $('#name').val();
+        let email = $('#email').val();
+        let phone = $('#phone').val();
+        let amount = totalprice * 100;
+
+        if (!name || !email || !phone) {
+            alert("Please fill your Name, Email and Phone.");
+            return;
+        }
+
+        var options = {
+            "key": "rzp_test_EQ3w00HdKKTDH6",
+            "amount": amount,
+            "currency": "INR",
+            "name": "MyShop",
+            "description": "Test Transaction",
+            "handler": function (response){
+                // Store payment details & submit
+                $('input[name=payment_id]').val(response.razorpay_payment_id);
+                $('input[name=razorpay_order_id]').val(response.razorpay_order_id);
+                $('input[name=razorpay_signature]').val(response.razorpay_signature);
+                $('form').submit();
+            },
+            "prefill": {
+                "name": name,
+                "email": email,
+                "contact": phone
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+    }
 </script>
 {% endblock %}

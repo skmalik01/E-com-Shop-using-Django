@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.db.models import Q
 from math import ceil
 import json
+import razorpay
 
 # Create your views here.
 def index(request):
@@ -116,9 +117,41 @@ def checkout(request):
         city = request.POST.get('city')
         state = request.POST.get('state')
         zip_code = request.POST.get('zip_code')
+        payment_id = request.POST.get('payment_id')  # Razorpay Payment ID from frontend
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_signature = request.POST.get('razorpay_signature')
 
-        order = Orders(items_json=items_json, name=name, email=email, phone=phone, address=address, city=city, state=state, zip_code=zip_code)
+        # Razorpay Signature Verification
+        if payment_id:
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            try:
+                params_dict = {
+                    'razorpay_order_id': razorpay_order_id,
+                    'razorpay_payment_id': payment_id,
+                    'razorpay_signature': razorpay_signature
+                }
+
+                client.utility.verify_payment_signature(params_dict)  # Will raise error if invalid
+                payment_verified = True
+            except:
+                payment_verified = False
+        else:
+            payment_verified = False  # If no payment done (Cash on Delivery maybe)
+
+        # Save Order (normal)
+        order = Orders(
+            items_json=items_json,
+            name=name,
+            email=email,
+            phone=phone,
+            address=address,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            payment_id=payment_id if payment_verified else None  # Save payment_id only if verified
+        )
         order.save()
+
         update = OrderUpdate(order_id=order.order_id, update_desc="The Order has been Placed")
         update.save()
         
@@ -166,7 +199,7 @@ Thank you for shopping with us!
         """
 
         send_mail(
-            "✅ Order Confirmation - MyShop",
+            "Order Confirmation - MyShop",
             message_body,
             settings.DEFAULT_FROM_EMAIL,
             [email],

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-lkw(6*8e+gi@8+-gkacbq56u5q$s8h&&@=84+i_mqsn*%emvm='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -67,6 +67,8 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+RAZORPAY_KEY_ID = config.get('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = config.get('RAZORPAY_KEY_SECRET')
 
 # Redirect after login
 LOGIN_REDIRECT_URL = '/'

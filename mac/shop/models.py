@@ -35,6 +35,7 @@ class Orders(models.Model):
     city = models.CharField(max_length=40)
     state = models.CharField(max_length=40)
     zip_code = models.CharField(max_length=90, null=False, blank=True)
+    payment_id = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         return self.name
