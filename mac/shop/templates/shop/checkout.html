@@ -55,11 +55,8 @@
                   <input type="text" class="form-control" id="zip_code" name="zip_code">
                 </div>
                 <div class="col-12">
-                  <button type="submit" class="btn btn-primary fw-bold">Place Order</button>
-                </div>
-                <div class="col-12">
-                  <button type="button" id="pay-btn" class="btn btn-success fw-bold mt-3">Pay with Razorpay</button>
-                </div>
+                  <button type="button" id="place-order-btn" class="btn btn-primary fw-bold">Place Order</button>
+                </div>                
             </form>
         </div>
     </div>
@@ -109,17 +106,17 @@
       document.location = "/shop";
       {% endif %}
 
-      document.getElementById('pay-btn').onclick = function(e) {
+      document.getElementById('place-order-btn').onclick = function(e) {
         let name = $('#name').val();
         let email = $('#email').val();
         let phone = $('#phone').val();
         let amount = totalprice * 100;
-
+    
         if (!name || !email || !phone) {
             alert("Please fill your Name, Email and Phone.");
             return;
         }
-
+    
         var options = {
             "key": "rzp_test_EQ3w00HdKKTDH6",
             "amount": amount,
@@ -127,10 +124,12 @@
             "name": "MyShop",
             "description": "Test Transaction",
             "handler": function (response){
-                // Store payment details & submit
+                // Razorpay se response milne pe payment details form me bhar ke submit kar do
                 $('input[name=payment_id]').val(response.razorpay_payment_id);
                 $('input[name=razorpay_order_id]').val(response.razorpay_order_id);
                 $('input[name=razorpay_signature]').val(response.razorpay_signature);
+    
+                // Now submit the form to Django
                 $('form').submit();
             },
             "prefill": {
@@ -145,6 +144,6 @@
         var rzp1 = new Razorpay(options);
         rzp1.open();
         e.preventDefault();
-    }
+    }    
 </script>
 {% endblock %}

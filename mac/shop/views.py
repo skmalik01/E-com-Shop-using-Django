@@ -138,7 +138,7 @@ def checkout(request):
         else:
             payment_verified = False  # If no payment done (Cash on Delivery maybe)
 
-        # Save Order (normal)
+        # Save Order
         order = Orders(
             items_json=items_json,
             name=name,
@@ -155,7 +155,7 @@ def checkout(request):
         update = OrderUpdate(order_id=order.order_id, update_desc="The Order has been Placed")
         update.save()
         
-        # items_json already saved above
+        # Items loop
         items = json.loads(items_json)
         item_details = ""
         total_price = 0
@@ -166,8 +166,7 @@ def checkout(request):
             total_price += qty * price
 
             try:
-                # Assuming product_id is like "pr5" where "5" is Product pk
-                pk = int(product_id[2:])
+                pk = int(product_id[2:])  # Assuming product id like "pr5"
                 product = Product.objects.get(id=pk)
                 product_name = product.product_name
             except:
@@ -175,13 +174,21 @@ def checkout(request):
 
             item_details += f"{product_name}  |  Qty: {qty}  |  ₹{price} each\n"
 
-        # Send email to user
+        # Payment success/fail message
+        if payment_verified:
+            payment_msg = f"Payment received successfully via Razorpay.\n🆔 Payment ID: {payment_id}\n"
+        else:
+            payment_msg = "⚠️ Payment pending or failed. Please contact support if amount was deducted.\n"
+
+        # 📨 Send email to user
         message_body = f"""
 Hi {name},
 
 🧾 Your Order has been placed successfully!
 
 🆔 Order ID: {order.order_id}
+
+{payment_msg}
 
 📦 Items Ordered:
 {item_details}
@@ -196,7 +203,9 @@ Hi {name},
 
 Thank you for shopping with us!
 – Team MyShop
-        """
+"""
+        message_body += "\nFor any queries, contact us at support@myshop.com\n"
+
 
         send_mail(
             "Order Confirmation - MyShop",
