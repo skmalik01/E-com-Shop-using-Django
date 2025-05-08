@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+  {% load socialaccount %}
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,6 +26,10 @@
         z-index: 2;
         position: relative;
       }
+
+      {% comment %} .button {
+        max-width: 50px;
+      } {% endcomment %}
     
       .card-body {
         display: flex;
@@ -100,15 +105,16 @@
           </form>
           {% if user.is_authenticated %}
             <p class="text-light my-2">Hello, {{ user.username }}</p>
-            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            <form method="post" action="{% url 'account_logout' %}" style="display:inline;">
               {% csrf_token %}
               <button type="submit" class="btn btn-danger btn-sm mx-2">Logout</button>
             </form>
           {% else %}
-            <form method="post" action="{% url 'social:begin' 'google-oauth2' %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-primary btn-sm mx-2">Login with Google</button>
-            </form>
+            <a class="btn btn-light btn-sm mx-2" style="width: 80px;" href="{% url 'account_login' %}">Login</a>
+            <a class="btn btn-light btn-sm mx-2 d-flex align-items-center justify-content-center" style="width: 200px;" href="{% provider_login_url 'google' %}">
+              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width:20px; height:20px; margin-right:8px;">
+              Sign in with Google
+            </a>
           {% endif %}
         </div>
       </div>

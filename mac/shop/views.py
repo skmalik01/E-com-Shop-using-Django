@@ -8,6 +8,7 @@ from django.db.models import Q
 from math import ceil
 import json
 import razorpay
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -107,6 +108,7 @@ def productView(request, myid):
         raise Http404("Product not found")
     return render(request, 'shop/prodView.html', {'product' : product})
 
+@login_required(login_url='/accounts/login/')
 def checkout(request):
     if request.method == "POST":
         items_json = request.POST.get('itemsJson')

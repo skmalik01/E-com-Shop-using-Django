@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path("search/",  views.search, name="Search"),
     path("products/<int:myid>",  views.productView, name="ProductView"),
     path("checkout/",  views.checkout, name="Checkout"),   
+    path('accounts/', include('allauth.urls')),
 ]

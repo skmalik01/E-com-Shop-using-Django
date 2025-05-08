@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block body %}
+<style>
+  /* Container to center the login form */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4; /* Light background */
+  }
+
+  /* Login card styling */
+  .login-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Limit the width of the card */
+  }
+
+  /* Heading styling */
+  .login-card h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  /* Form field styling */
+  .form-group label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .form-control {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  /* Button styling */
+  .btn {
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  /* Google button with red color */
+  .btn-danger {
+    background-color: #db4437;
+    border: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #c1351d;
+  }
+
+  /* Sign up button with blue color */
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  /* Spacing between buttons */
+  .mt-2 {
+    margin-top: 10px;
+  }
+
+  .mt-3 {
+    margin-top: 20px;
+  }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <h2 class="text-center mb-4">Login to MyShop</h2>
+
+        <form method="post" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username" class="font-weight-bold">Username or Email</label>
+                {{ form.username|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+                <label for="id_password" class="font-weight-bold">Password</label>
+                {{ form.password|add_class:"form-control" }}
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block mt-3">Login</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="{% url 'socialaccount_login' 'google' %}" class="btn btn-danger btn-block mt-2">
+                <i class="fab fa-google"></i> Login with Google
+            </a>
+            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-block mt-2">Signup</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
