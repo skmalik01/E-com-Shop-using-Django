@@ -47,7 +47,7 @@
     </style>
   </head>
   <body>
-    {% if request.path != '/accounts/login/' %}
+    {% if '/accounts/login/' not in request.path and '/accounts/signup/' not in request.path and '/login/' not in request.path %}
     <nav class="navbar navbar-expand-lg bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand text-light" href="/">MY SHOP</a>
@@ -112,10 +112,10 @@
             </form>
           {% else %}
             <a class="btn btn-light btn-sm mx-2" style="width: 80px;" href="{% url 'account_login' %}">Login</a>
-            <a class="btn btn-light btn-sm mx-2 d-flex align-items-center justify-content-center" style="width: 200px;" href="{% provider_login_url 'google' %}">
+            {% comment %} <a class="btn btn-light btn-sm mx-2 d-flex align-items-center justify-content-center" style="width: 200px;" href="{% provider_login_url 'google' %}">
               <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width:20px; height:20px; margin-right:8px;">
               Sign in with Google
-            </a>
+            </a> {% endcomment %}
           {% endif %}
         </div>
       </div>

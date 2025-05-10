@@ -16,7 +16,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
   }
 
   .login-card h2 {
@@ -45,9 +45,14 @@
   }
 </style>
 
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <div class="login-container">
   <div class="login-card text-center">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width:40px; height:40px; margin-bottom: 10px;">
+    <!-- Use Font Awesome Google Icon -->
+    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-logo">
+    
     <h2>Sign In via {{ provider.name }}</h2>
     <p>You are about to sign in using a third-party account from {{ provider.name }}.</p>
 

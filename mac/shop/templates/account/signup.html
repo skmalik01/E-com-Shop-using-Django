@@ -1,0 +1,189 @@
+{% extends "shop/basic.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block body %}
+
+<style>
+  .signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+
+  .signup-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+  }
+
+  .signup-card h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #555;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .google-btn:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+
+  .or-divider {
+    margin: 20px 0;
+    text-align: center;
+    color: #888;
+    position: relative;
+  }
+
+  .or-divider::before,
+  .or-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #ddd;
+  }
+
+  .or-divider::before {
+    left: 0;
+  }
+
+  .or-divider::after {
+    right: 0;
+  }
+
+  form {
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+    margin-top: 12px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  .helptext {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+  }
+
+  .errorlist {
+    color: #d9534f;
+    font-size: 13px;
+    margin: 5px 0 0 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .btn-primary:hover {
+    background-color: #218838;
+  }
+
+  .signin-link {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+</style>
+
+<div class="signup-container">
+  <div class="signup-card">
+    <h2>Create your account</h2>
+
+    <!-- Google Sign Up -->
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+      {% for provider in socialaccount_providers %}
+        <a href="{% provider_login_url provider.id process='signup' %}" class="google-btn">
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon">
+          Sign up with {{ provider.name }}
+        </a>
+      {% endfor %}
+    {% endif %}
+
+    <div class="or-divider">OR</div>
+
+    <!-- Credentials Sign Up -->
+    <form method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <small class="helptext">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <ul class="errorlist"><li>{{ error }}</li></ul>
+        {% endfor %}
+      {% endfor %}
+
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+      <button type="submit" class="btn-primary">Sign Up</button>
+    </form>
+
+    <a href="{% url 'account_login' %}" class="signin-link">Already have an account? Sign In</a>
+  </div>
+</div>
+
+{% endblock %}

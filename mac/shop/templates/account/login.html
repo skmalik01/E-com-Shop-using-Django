@@ -88,6 +88,36 @@
   .mt-3 {
     margin-top: 20px;
   }
+
+    .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    color: #555;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px auto 0;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .google-btn:hover {
+    background-color:rgba(247, 247, 247, 0);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.39);
+  }
+
+  .google-btn img {
+    width: 20px;
+    height: 20px;
+  }
 </style>
 
 <div class="login-container">
@@ -109,10 +139,11 @@
         </form>
 
         <div class="text-center mt-3">
-            <a href="{% provider_login_url 'google' %}" class="btn btn-danger btn-block mt-2">
-                <i class="fab fa-google"></i> Login with Google
-            </a>
             <a href="{% url 'account_signup' %}" class="btn btn-primary btn-block mt-2">Signup</a>
+            <a href="{% provider_login_url 'google' %}" class="google-btn">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+              Sign in with Google
+            </a>
         </div>
     </div>
 </div>
