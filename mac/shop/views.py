@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -100,13 +100,8 @@ def search(request):
     })
 
 def productView(request, myid):
-    #fetch the product using id
-    try:
-        # Use get instead of filter
-        product = Product.objects.get(id=myid)
-    except Product.DoesNotExist:
-        raise Http404("Product not found")
-    return render(request, 'shop/prodView.html', {'product' : product})
+    product = get_object_or_404(Product, id=myid)
+    return render(request, 'shop/prodView.html', {'product': product})
 
 @login_required(login_url='/accounts/login/')
 def checkout(request):

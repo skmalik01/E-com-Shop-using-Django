@@ -26,11 +26,7 @@
         z-index: 2;
         position: relative;
       }
-
-      {% comment %} .button {
-        max-width: 50px;
-      } {% endcomment %}
-    
+      
       .card-body {
         display: flex;
         flex-direction: column;
@@ -60,40 +56,20 @@
               <a class="nav-link active text-light" aria-current="page" href="/shop/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/tracker">Tracker</a>
-            </li>
-            {% comment %} <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/products">Product View</a>
-            </li> {% endcomment %}
-            {% comment %} <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/search">Search Result</a>
-            </li> {% endcomment %}
-            <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/checkout">Checkout</a>
+              <a class="nav-link text-light" href="/shop/tracker/">Tracker</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/about">About Us</a>
+              <a class="nav-link text-light" href="/shop/products/">Product View</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="/shop/contact">Contact Us</a>
+              <a class="nav-link text-light" href="/shop/checkout/">Checkout</a>
             </li>
-            {% comment %} <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li> {% endcomment %}
-            {% comment %} <li class="nav-item">
-              <a class="nav-link disabled text-light" aria-disabled="true">Disabled</a>
-            </li> {% endcomment %}
-            {% comment %} <li class="nav-item">
-              <a class="nav-link text-light" href="#">My Cart(<span id="cart">0</span>)</a>
-            </li> {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/about/">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/shop/contact/">Contact Us</a>
+            </li>
           </ul>
           <form class="d-flex" role="search" method="POST" action="/shop/search/">{% csrf_token %}
             <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
@@ -163,7 +139,75 @@
       });
       
     </script>
-
     {% block js %}{% endblock %}
+
+    <!-- START FOOTER -->
+    <footer style="background-color: #000;" class="text-light pt-5 pb-3 mt-5">
+      <div class="container">
+        <div class="row">
+
+          <!-- ABOUT -->
+          <div class="col-md-3">
+            <h6 class="text-uppercase fw-bold mb-3">About</h6>
+            <ul class="list-unstyled">
+              <li><a href="/shop/contact/" class="text-light text-decoration-none">Contact Us</a></li>
+              <li><a href="/shop/about/" class="text-light text-decoration-none">About Us</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Careers</a></li>
+              <li><a href="#" class="text-light text-decoration-none">MyShop Stories</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Press</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Corporate Information</a></li>
+            </ul>
+          </div>
+
+          <!-- GROUP COMPANIES -->
+          <div class="col-md-3">
+            <h6 class="text-uppercase fw-bold mb-3">Group Companies</h6>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-light text-decoration-none">Myntra</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Cleartrip</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Shopsy</a></li>
+            </ul>
+          </div>
+
+          <!-- HELP -->
+          <div class="col-md-3">
+            <h6 class="text-uppercase fw-bold mb-3">Help</h6>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-light text-decoration-none">Payments</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Shipping</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Cancellation & Returns</a></li>
+              <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
+            </ul>
+          </div>
+
+          <!-- POLICY -->
+          <div class="col-md-3">
+            <h6 class="text-uppercase fw-bold mb-3">Consumer Policy</h6>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-light text-decoration-none">Terms Of Use</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Security</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Privacy</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Sitemap</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Grievance Redressal</a></li>
+              <li><a href="#" class="text-light text-decoration-none">EPR Compliance</a></li>
+            </ul>
+          </div>
+
+        </div>
+        
+        <hr class="text-light mt-4">
+        
+        <div class="row">
+          <div class="col-md-6">
+            <p>© 2007-2025 MyShop.com</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p>Registered Office: MyShop Pvt. Ltd, Tech Park, Bengaluru, India | CIN: U51109KA2012PTC066107</p>
+            <p>Call: <a href="tel:+9108045614700" class="text-light">080-45614700</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- END FOOTER -->
   </body>
 </html>
