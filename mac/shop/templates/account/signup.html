@@ -142,6 +142,26 @@
     margin-top: 15px;
     font-size: 14px;
   }
+
+  .btn-outline-secondary {
+  background-color: #f8f9fa;       /* Light gray */
+  color: #333;
+  border: 1px solid #ced4da;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 5px;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #d0e7ff;      /* Soft blue on hover */
+  color: #0d47a1;                 /* Dark blue text */
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 </style>
 
 <div class="signup-container">
@@ -182,7 +202,8 @@
       <button type="submit" class="btn-primary">Sign Up</button>
     </form>
 
-    <a href="{% url 'account_login' %}" class="signin-link">Already have an account? Sign In</a>
+    <!-- <a href="{% url 'account_login' %}" class="signin-link">Already have an account? Sign In</a> -->
+    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary btn-block mt-2">Already have an account? Sign In</a>
   </div>
 </div>
 

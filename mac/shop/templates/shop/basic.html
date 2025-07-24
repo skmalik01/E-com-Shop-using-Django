@@ -34,12 +34,13 @@
       }
       
       .btn:hover {
-        background-color:rgb(158, 5, 5);
+        background-color: #17c843 !important;
+        color: white !important;
+        border: none;
       }
     </style>
     <style>
-      {% block css %}
-      {% endblock %}
+    {% block css %}{% endblock %}
     </style>
   </head>
   <body>
@@ -58,9 +59,9 @@
             <li class="nav-item">
               <a class="nav-link text-light" href="/shop/tracker/">Tracker</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link text-light" href="/shop/products/">Product View</a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link text-light" href="/shop/checkout/">Checkout</a>
             </li>
@@ -87,7 +88,7 @@
               <button type="submit" class="btn btn-danger btn-sm mx-2">Logout</button>
             </form>
           {% else %}
-            <a class="btn btn-light btn-sm mx-2" style="width: 80px;" href="{% url 'account_login' %}">Login</a>
+            <a class="btn btn-light btn-sm mx-2" style="width: 100px;" href="{% url 'account_login' %}">Login</a>
             {% comment %} <a class="btn btn-light btn-sm mx-2 d-flex align-items-center justify-content-center" style="width: 200px;" href="{% provider_login_url 'google' %}">
               <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width:20px; height:20px; margin-right:8px;">
               Sign in with Google
@@ -104,7 +105,6 @@
     
     
     <script>
-      {% comment %} #Find out the cart items from localstorage {% endcomment %}
       if (localStorage.getItem('cart') == null){
         var cart = {};
       }

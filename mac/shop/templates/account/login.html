@@ -3,74 +3,76 @@
 {% load socialaccount %}
 {% block body %}
 <style>
-  /* Container to center the login form */
+  /* Full-page container for centering */
   .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4; /* Light background */
+    min-height: 100vh;
+    background-color: #f2f2f2;
+    padding: 20px;
   }
 
-  /* Login card styling */
+  /* Login card */
   .login-card {
     background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; /* Limit the width of the card */
+    max-width: 400px;
   }
 
-  /* Heading styling */
   .login-card h2 {
-    font-size: 28px;
+    font-size: 26px;
+    font-weight: 600;
     color: #333;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 25px;
   }
 
-  /* Form field styling */
   .form-group label {
-    font-weight: bold;
+    font-weight: 500;
     color: #333;
+    margin-bottom: 6px;
+    display: block;
   }
 
   .form-control {
-    border: 1px solid #ddd;
     padding: 10px;
-    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     margin-bottom: 15px;
     width: 100%;
-    font-size: 16px;
   }
 
   .form-control:focus {
     border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
   }
 
-  /* Button styling */
   .btn {
     padding: 12px;
-    border-radius: 5px;
     font-size: 16px;
+    border-radius: 6px;
   }
 
   .btn-block {
     width: 100%;
+    display: block;
   }
 
-  /* Google button with red color */
-  .btn-danger {
-    background-color: #db4437;
+  .btn-success {
+    background-color: #28a745;
     border: none;
   }
 
-  .btn-danger:hover {
-    background-color: #c1351d;
+  .btn-success:hover {
+    background-color: #218838;
   }
 
-  /* Sign up button with blue color */
   .btn-primary {
     background-color: #007bff;
     border: none;
@@ -80,72 +82,97 @@
     background-color: #0056b3;
   }
 
-  /* Spacing between buttons */
-  .mt-2 {
-    margin-top: 10px;
-  }
-
-  .mt-3 {
-    margin-top: 20px;
-  }
-
-    .google-btn {
+  /* Google Button */
+  .google-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-width: 320px;
+    max-width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
     background: white;
-    color: #555;
-    font-size: 16px;
+    color: #444;
+    font-size: 15px;
     font-weight: 500;
     text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin: 20px auto 0;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-top: 15px;
+    transition: all 0.3s ease;
   }
 
   .google-btn:hover {
-    background-color:rgba(247, 247, 247, 0);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.39);
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
   }
 
   .google-btn img {
     width: 20px;
     height: 20px;
   }
+
+  /* Responsive tweaks */
+  @media screen and (max-width: 480px) {
+    .login-card {
+      padding: 30px 20px;
+    }
+  }
+
+  /* Optional Footer Styling */
+  footer {
+    background-color: #000;
+    color: #ccc;
+    padding: 30px 0;
+    margin-top: 40px;
+  }
+
+  footer a {
+    color: #ccc;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    color: #fff;
+  }
+
+  .footer-section {
+    margin-bottom: 20px;
+  }
+
+  .footer-section h5 {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
 </style>
 
 <div class="login-container">
-    <div class="login-card">
-        <h2 class="text-center mb-4">Login to MyShop</h2>
+  <div class="login-card">
+    <h2>Login to MyShop</h2>
 
-        <form method="post" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="id_login" class="font-weight-bold">Username or Email</label>
-                {{ form.login|add_class:"form-control" }}
-            </div>
-            <div class="form-group">
-                <label for="id_password" class="font-weight-bold">Password</label>
-                {{ form.password|add_class:"form-control" }}
-            </div>
+    <form method="post" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_login">Username or Email</label>
+        {{ form.login|add_class:"form-control" }}
+      </div>
+      <div class="form-group">
+        <label for="id_password">Password</label>
+        {{ form.password|add_class:"form-control" }}
+      </div>
+      <button type="submit" class="btn btn-success btn-block">Login</button>
+    </form>
 
-            <button type="submit" class="btn btn-success btn-block mt-3">Login</button>
-        </form>
-
-        <div class="text-center mt-3">
-            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-block mt-2">Signup</a>
-            <a href="{% provider_login_url 'google' %}" class="google-btn">
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-              Sign in with Google
-            </a>
-        </div>
+    <div class="text-center mt-3">
+      <a href="{% url 'account_signup' %}" class="btn btn-primary btn-block mt-2">Signup</a>
+      <a href="{% provider_login_url 'google' %}" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Sign in with Google
+      </a>
     </div>
+  </div>
 </div>
-
 {% endblock %}
